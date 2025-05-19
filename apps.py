@@ -37,7 +37,12 @@ class AppCommands:
                     "cmd": ['brave.exe'],
                     "keywords": ["brave", "browser"],
                     "response": "Opening Brave"
-                }
+                },
+                "spotify": {
+                    "cmd": ['spotify.exe'],
+                    "keywords": ["spotify"],
+                    "response": "Opening Spotify"
+                },
             },
             "close": {
                 "calculator": {
@@ -58,7 +63,12 @@ class AppCommands:
                     "cmd": ['taskkill', '/f', '/im', 'brave.exe'],
                     "keywords": ["brave", "browser"],
                     "response": "Closing Brave"
-                }
+                },
+                "spotify": {
+                    "cmd": ['taskkill', '/f', '/im', 'spotify.exe'],
+                    "keywords": ["spotify"],
+                    "response": "Closing Spotify"
+                },
             }
         }
 
@@ -170,10 +180,10 @@ class HERO:
         """Command handler with verification"""
         self.debug_log(f"Handling {action} command: {command}")
         command = command.lower()
+        # Only open/close logic remains
         for app, details in self.app_commands.get(action, {}).items():
             if any(keyword in command for keyword in details.get("keywords", [])):
-                self.speak(details["response"])  # Always speak the response first
-                # For 'open', don't wait; for 'close', wait for result
+                self.speak(details["response"])
                 wait = action != "open"
                 if self.execute_command(details["cmd"], wait=wait):
                     self.speak("Done")
